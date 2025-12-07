@@ -94,4 +94,19 @@ newsRouter.get('/read', userAuth, async (req, res) => {
     }
 });
 
+newsRouter.get('/favorites', userAuth, async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const user = await User.findById(userId);
+        res.status(200).json({
+            readArticles: user.favoriteArticles || []
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to fetch favorite articles",
+            error: err.message
+        });
+    }
+});
+
 module.exports = newsRouter;
