@@ -23,6 +23,7 @@ connectDB().then(() => {
     });
 }).catch(err => {
     console.log("Error connecting to MongoDB:", err.message);
+    process.exit(1);
 });
 
 module.exports = app;

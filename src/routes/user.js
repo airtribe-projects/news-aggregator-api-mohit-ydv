@@ -9,7 +9,6 @@ const userRouter = express.Router();
 userRouter.post('/signup', async (req, res) => {
     try {
         const { name, email, password, preferences } = req.body;
-        // Input validation
         if (!name || typeof name !== 'string' || name.length < 4) {
             return res.status(400).json({ message: 'Name must be at least 4 characters.' });
         }
@@ -31,7 +30,6 @@ userRouter.post('/signup', async (req, res) => {
             preferences
         });
         const savedUser = await newUser.save();
-        console.log('User saved:', savedUser);
         const userResponse = savedUser.toObject();
         delete userResponse.password;
         const jwt_token = await jwt.sign({ _id: savedUser._id }, process.env.JWT_SECRET, {
@@ -87,7 +85,7 @@ userRouter.get('/preferences', userAuth, async (req, res) => {
             preferences: user.preferences
         });
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             message: "Failed to fetch user preferences",
             error: error.message
         })
@@ -113,7 +111,7 @@ userRouter.put('/preferences', userAuth, async (req, res) => {
             preferences: updatedUser.preferences
         });
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             message: "Failed to update user preferences",
             error: error.message
         })

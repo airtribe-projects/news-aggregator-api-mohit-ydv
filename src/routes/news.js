@@ -99,7 +99,7 @@ newsRouter.get('/favorites', userAuth, async (req, res) => {
         const userId = req.user._id;
         const user = await User.findById(userId);
         res.status(200).json({
-            readArticles: user.favoriteArticles || []
+            favoriteArticles: user.favoriteArticles || []
         });
     } catch (err) {
         res.status(500).json({
